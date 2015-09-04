@@ -15,7 +15,7 @@ class ClearOutofDateDocker {
 	def static void main(String[] args){
 		
 		DockerClient dClient = new DockerClientImpl(dockerHost:'http://172.27.2.94:4243',)
-		DockerResponse response = dClient.ps(query:[all: true, size: false])
+		DockerResponse response = dClient.ps(query:[all: true, size: true])
 		log.info "containers to be checked:${response.content.size()}"
 		if(response.status.success==true){
 			response.content.each { container->
@@ -25,18 +25,18 @@ class ClearOutofDateDocker {
 					log.info "[TODO][stop and remove container]${container.Names},${container.Status}"
 					log.info "stop container......"
 					response = dClient.stop(container.Id)
-					log.info response.status.success
+					log.info response.status.success.toString()
 					if(response.status.success==true){
 						log.info "remove contaner......"
 						response = dClient.rm(container.Id)
-						log.info response.status.success
-						if(resonse.status.success==true){
+						log.info response.status.success.toString()
+						if(response.status.success==true){
 							log.info "[success][remove container]${container.Names},${container.Status}"
 						}else{
-							log.info response
+							log.info response.toString()
 						}
 					}else{
-						log.info response
+						log.info response.toString()
 					}
 				}else{
 					log.info "[Don't stop this container]${container.Names},${container.Status}"
@@ -44,7 +44,7 @@ class ClearOutofDateDocker {
 			}
 		}else{
 			log.info "[fail]docker ps -a"
-			log.info response
+			log.info response.toString()
 		}
 	}
 }
