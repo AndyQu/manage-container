@@ -3,3 +3,6 @@
 /bin/
 /build/
 /.gradle/
+/.settings/
+/.idea/
+/docker-manage.iml

@@ -1,11 +1,8 @@
 package com.sankuai.srq.docker
 
-import groovy.json.JsonOutput;
 import de.gesellix.docker.client.DockerClient;
 import de.gesellix.docker.client.DockerClientImpl
 import de.gesellix.docker.client.DockerResponse
-
-import groovy.json.JsonOutput
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -26,7 +23,8 @@ class ClearOutofDateDocker {
 					log.info "stop container......"
 					response = dClient.stop(container.Id)
 					log.info response.status.success.toString()
-					if(response.status.success==true){
+					if(response.status.success==true || response.status.code==304){
+						//304:资源未更改. 表示container已经被停止了
 						log.info "remove contaner......"
 						response = dClient.rm(container.Id)
 						log.info response.status.success.toString()
