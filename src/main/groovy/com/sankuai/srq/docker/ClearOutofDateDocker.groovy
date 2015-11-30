@@ -35,7 +35,7 @@ class ClearOutofDateDocker {
 						}
                         container.Names.each {
                             name->
-                                def result = new File("/docker-deploy/${name}").deleteDir
+                                def result = new File("/docker-deploy/${name}").deleteDir()
                                 if(result==true){
                                     logger.info "removed folder:/docker-deploy/${name}"
                                 }else{
